@@ -1,0 +1,151 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/fraunces";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Fraunces Variable", "Georgia", "Times New Roman", serif;
+
+  /* Warm cream / paper */
+  --color-cream-50: #fbf9f4;
+  --color-cream-100: #f7f2e9;
+  --color-cream-200: #efe6d6;
+  --color-cream-300: #e3d4bb;
+  --color-cream-400: #d3bd97;
+
+  /* Deep charcoal / navy */
+  --color-navy-400: #48628f;
+  --color-navy-500: #31486f;
+  --color-navy-600: #25385a;
+  --color-navy-700: #1c2d49;
+  --color-navy-800: #152138;
+  --color-navy-850: #111a2c;
+  --color-navy-900: #0c1424;
+  --color-navy-950: #080e1a;
+
+  /* Gold / amber accent */
+  --color-gold-100: #f6ead1;
+  --color-gold-200: #ecd5a1;
+  --color-gold-300: #e0bb6d;
+  --color-gold-400: #d2a64a;
+  --color-gold-500: #c0912f;
+  --color-gold-600: #9d7325;
+  --color-gold-700: #7a581d;
+
+  /* Ink text */
+  --color-ink-900: #1b1c1e;
+  --color-ink-700: #3d3f43;
+  --color-ink-500: #6b6e73;
+  --color-ink-400: #8b8e93;
+
+  /* WhatsApp brand */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #128c4a;
+
+  --color-success: #1f8a4c;
+  --color-warning: #b0791f;
+  --color-danger: #b3342c;
+}
+
+:root {
+  --background: var(--color-cream-50);
+  --foreground: var(--color-ink-900);
+}
+
+* {
+  border-color: color-mix(in oklab, var(--color-ink-900) 10%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Subtle grain / paper texture for hero and dark sections */
+.texture-dark {
+  background-color: #0b1528;
+  background-image:
+    radial-gradient(circle at 18% 18%, rgba(208, 166, 74, 0.10), transparent 42%),
+    radial-gradient(circle at 85% 85%, rgba(73, 91, 128, 0.16), transparent 44%),
+    linear-gradient(168deg, #0f1d36 0%, #0b1528 55%, #0a1220 100%);
+}
+
+.texture-cream {
+  background-color: var(--color-cream-50);
+  background-image:
+    radial-gradient(circle at 90% 10%, rgba(208, 166, 74, 0.07), transparent 40%),
+    linear-gradient(180deg, var(--color-cream-50) 0%, var(--color-cream-100) 100%);
+}
+
+.texture-card {
+  background-color: #0e1a30;
+  background-image: radial-gradient(circle at 80% 0%, rgba(208, 166, 74, 0.10), transparent 48%);
+}
+
+.gold-rule {
+  background: linear-gradient(90deg, transparent, var(--color-gold-400), transparent);
+  height: 1px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::selection {
+  background: var(--color-gold-200);
+  color: var(--color-navy-900);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-fade-in {
+  animation: fadeIn 0.9s ease both;
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}

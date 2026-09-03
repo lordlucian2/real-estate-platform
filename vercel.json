@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "functions": {
+    "**/*.": { "runtime": "nodejs18.x" }
+  },
+  "regions": ["iad1"]
+}

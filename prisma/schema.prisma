@@ -1,0 +1,23 @@
+// Production persistence layer (PostgreSQL via Neon, Prisma ORM).
+//
+// The app's data layer historically persisted to a local .data/ JSON folder.
+// To make that durable and shared on Vercel's serverless platform, the JSON
+// documents are now stored as rows in a single KeyValue table, keyed by the
+// same filename they used on disk. store.ts and cms.ts keep their exact public
+// API — only the underlying read/write helpers were swapped to hit Postgres.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// One row per JSON document (e.g. "settings.json", "home.json", "requests.json").
+model KeyValue {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
