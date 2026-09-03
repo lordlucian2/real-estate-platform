@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSettings, getAuditLog, getUsers, getPages, getMedia } from "@/lib/cms";
 import { getAllProperties } from "@/lib/store";
 import { AdminPageHeader, AdminCard } from "@/components/admin/admin-ui";
+import { ChangePasswordCard } from "./change-password";
 import { Globe, Database, FileJson, MessageCircle, Cloud } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -37,8 +38,8 @@ export default async function SystemSettingsPage() {
     },
     {
       label: "Admin password",
-      note: process.env.ADMIN_PASSWORD ? "Using ADMIN_PASSWORD env var." : "Using default monrovia2026 — set ADMIN_PASSWORD in production.",
-      ok: !!process.env.ADMIN_PASSWORD,
+      note: "Change it below — keep it strong and unique.",
+      ok: true,
     },
   ];
 
@@ -58,7 +59,7 @@ export default async function SystemSettingsPage() {
         description="Storage overview and a quick readiness checklist for going live."
       />
       <div className="space-y-6 p-4 sm:p-6">
-        <AdminCard title="Data store" description="This site persists to a local JSON store in .data/ — swap-ready for a database later.">
+        <AdminCard title="Data store" description="This site persists to a Neon PostgreSQL database.">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {[
               { icon: Database, label: "Properties", value: totals.properties },
@@ -101,15 +102,15 @@ export default async function SystemSettingsPage() {
 
         <AdminCard title="About this Command Center" description="Everything here is editable from the sidebar — nothing requires touching code.">
           <p className="flex items-center gap-2 text-sm text-ink-500">
-            <Cloud size={15} className="text-gold-600" /> Runtime storage lives under{" "}
-            <code className="rounded bg-cream-100 px-1.5 py-0.5 text-xs">.data/</code> and media uploads under{" "}
-            <code className="rounded bg-cream-100 px-1.5 py-0.5 text-xs">.data/uploads/</code>.
+            <Cloud size={15} className="text-gold-600" /> Runtime storage is backed by a{" "}
+            <code className="rounded bg-cream-100 px-1.5 py-0.5 text-xs">Neon PostgreSQL</code> database.
           </p>
           <p className="mt-2 flex items-center gap-2 text-sm text-ink-500">
             <MessageCircle size={15} className="text-gold-600" /> Replace WhatsApp, domain and email placeholders in{" "}
             <Link href="/admin/website/homepage" className="font-semibold text-gold-700 hover:underline">General Settings</Link>.
           </p>
         </AdminCard>
+        <ChangePasswordCard />
       </div>
     </div>
   );

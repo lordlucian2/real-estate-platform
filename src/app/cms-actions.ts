@@ -18,6 +18,7 @@ import {
   deleteTask,
   deleteUser,
   getAuditLog,
+  getCurrentUser,
   getHomeWorking,
   getHomePublished,
   getLocationsCms,
@@ -41,6 +42,7 @@ import {
   saveSettings,
   saveTask,
   saveUser,
+  verifyPassword,
 } from "@/lib/cms";
 import {
   appendTestimonial,
@@ -604,6 +606,25 @@ export async function cmsDeleteUser(id: string): Promise<ActionResult> {
   await deleteUser(id);
   await logAudit({ actor: ctx.user.name, action: "delete", entity: "user", entityId: id, summary: `Deleted user ${id}` });
   return after(true, "User deleted");
+}
+
+export async function cmsChangePassword(prev: ActionResult | null, fd: FormData): Promise<ActionResult> {
+  const ctx = await requireAdmin();
+  if (!ctx.ok) return ctx;
+  const current = str(fd, "current");
+  const next = str(fd, "next");
+  const currentUser = await getCurrentUser();
+  if (!currentUser) return { ok: false, error: "You must be signed in." };
+  if (!current) return { ok: false, error: "Enter your current password." };
+  if (next.length < 8) return { ok: false, error: "Password must be at least 8 characters." };
+  if (!verifyPassword(currentUser.username, current)) {
+    return { ok: false, error: "Current password is incorrect." };
+  }
+  const users = await getUsers();
+  const updated = users.map((u) => (u.id === currentUser.id ? { ...u, passwordHash: hashPassword(next) } : u));
+  await saveUser(updated.find((u) => u.id === currentUser.id)!);
+  await logAudit({ actor: currentUser.name, action: "change_password", entity: "user", entityId: currentUser.id, summary: "Changed own password" });
+  return after(true, "Password changed");
 }
 
 /* ----------------------- READ HELPERS FOR ADMIN PAGES ----------------------- */
